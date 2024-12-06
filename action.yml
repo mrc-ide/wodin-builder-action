@@ -33,7 +33,7 @@ runs:
       shell: bash
       run: |
         npm run build-static-site-for-action --prefix=wodin-builder/app/server -- ../../../ ./public ./views
-        npm run copy-static-files --prefix=wodin-builder/app/server
+        ./wodin-builder/scripts/copy-static-files.sh .
 
     - name: Deploy to GitHub pages 🚀
       uses: JamesIves/github-pages-deploy-action@v4.4.1
