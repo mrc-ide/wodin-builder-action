@@ -42,7 +42,9 @@ runs:
         npm run build-static-site-for-action --prefix=wodin-builder/app/server -- ../../../wodin-config ../../../static-site ./views
         npm run copy-static-files --prefix=wodin-builder/app/server
 
-    - name: Print folder
-      shell: bash
-      run: |
-        echo $(ls ./static-site)
+    - name: Deploy to GitHub pages 🚀
+      uses: JamesIves/github-pages-deploy-action@v4.4.1
+      with:
+        clean: false
+        branch: gh-pages
+        folder: static-site
