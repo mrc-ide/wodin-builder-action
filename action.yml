@@ -35,6 +35,7 @@ runs:
       shell: bash
       run: |
         mkdir static-site
+        git init
 
     - name: Build sites
       shell: bash
