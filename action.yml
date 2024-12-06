@@ -29,15 +29,10 @@ runs:
       run: |
         npm run static-build --prefix=wodin-builder/app/static
 
-    - name: Make output folder
-      shell: bash
-      run: |
-        mkdir static-site
-
     - name: Build sites
       shell: bash
       run: |
-        npm run build-static-site-for-action --prefix=wodin-builder/app/server -- ../../../ ../../../static-site ./views
+        npm run build-static-site-for-action --prefix=wodin-builder/app/server -- ../../../ ./public ./views
         npm run copy-static-files --prefix=wodin-builder/app/server
 
     - name: Deploy to GitHub pages 🚀
@@ -45,4 +40,4 @@ runs:
       with:
         clean: false
         branch: gh-pages
-        folder: static-site
+        folder: wodin-builder/app/server/public
