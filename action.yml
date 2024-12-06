@@ -1,39 +1,41 @@
-name: Setup CI Env and login to GHCR
-
-inputs:
-  ghcr-username:
-    required: true
-  ghcr-password:
-    required: true
-
-outputs:
-  CI_SHA:
-    description: "Short SHA of current commit"
-    value: ${{ steps.ci-env.outputs.CI_SHA }}
-  CI_BRANCH:
-    description: "Current branch"
-    value: ${{ steps.ci-env.outputs.CI_BRANCH }}
+name: Make Static Wodin Sites
 
 runs:
   using: "composite"
   steps:
-    - id: ci-env
-      name: Setup Environment
+    - name: Checkout wodin config
+      uses: actions/checkout@v4
+      with:
+        path: wodin-config
+
+    - name: Checkout wodin
+      uses: actions/checkout@v4
+      with:
+        repository: mrc-ide/wodin
+        path: wodin-builder
+
+    - name: Run dependencies
       shell: bash
       run: |
-        if [ "${{github.event_name}}" = "pull_request" ];
-        then
-          long_sha=${{ github.event.pull_request.head.sha }}
-          echo "CI_BRANCH=${{ github.head_ref }}" >> $GITHUB_OUTPUT
-        else
-          long_sha=${GITHUB_SHA}
-          echo "CI_BRANCH=${{ github.ref_name }}" >> $GITHUB_OUTPUT
-        fi
-        echo "CI_SHA=${long_sha:0:7}" >> $GITHUB_OUTPUT
+        ./wodin-builder/scripts/run-dependencies.sh
 
-    - name: Login to GHCR (GitHub Packages)
-      uses: docker/login-action@v3
-      with:
-        registry: ghcr.io
-        username: ${{ inputs.ghcr-username }}
-        password: ${{ inputs.ghcr-password }}
+    - name: Build static wodin
+      shell: bash
+      run: |
+        npm run static-build --prefix=wodin-builder/app/static
+
+    - name: Make output folder
+      shell: bash
+      run: |
+        mkdir static-site
+
+    - name: Build sites
+      shell: bash
+      run: |
+        npm run build-static-site-for-action --prefix=wodin-builder/app/server -- ../../../wodin-config ../../../static-site ./views
+        npm run copy-static-files --prefix=wodin-builder/app/server
+
+    - name: Print folder
+      shell: bash
+      run: |
+        echo $(ls ./static-site)
