@@ -11,6 +11,7 @@ runs:
     - name: Checkout wodin
       uses: actions/checkout@v4
       with:
+        ref: mrc-6023
         repository: mrc-ide/wodin
         path: wodin-builder
 
