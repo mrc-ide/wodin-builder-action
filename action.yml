@@ -5,8 +5,6 @@ runs:
   steps:
     - name: Checkout wodin config
       uses: actions/checkout@v4
-      with:
-        path: wodin-config
 
     - name: Checkout wodin
       uses: actions/checkout@v4
@@ -35,12 +33,11 @@ runs:
       shell: bash
       run: |
         mkdir static-site
-        git init
 
     - name: Build sites
       shell: bash
       run: |
-        npm run build-static-site-for-action --prefix=wodin-builder/app/server -- ../../../wodin-config ../../../static-site ./views
+        npm run build-static-site-for-action --prefix=wodin-builder/app/server -- ../../../ ../../../static-site ./views
         npm run copy-static-files --prefix=wodin-builder/app/server
 
     - name: Deploy to GitHub pages 🚀
