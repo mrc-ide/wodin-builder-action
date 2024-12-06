@@ -20,6 +20,12 @@ runs:
       run: |
         ./wodin-builder/scripts/run-dependencies.sh
 
+    - name: Install npm packages
+      shell: bash
+      run: |
+        npm ci --prefix=wodin-builder/app/static
+        npm ci --prefix=wodin-builder/app/server
+
     - name: Build static wodin
       shell: bash
       run: |
