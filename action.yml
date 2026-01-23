@@ -32,7 +32,7 @@ runs:
     - name: Build sites
       shell: bash
       run: |
-        npm run build-static-site-for-action --prefix=wodin-builder/app/server -- ../../../ ./public ./views
+        npm run build-static-site-for-action --prefix=wodin-builder/app/server -- ../../../ ./public
         ./wodin-builder/scripts/copy-static-files.sh .
 
     - name: Deploy to GitHub pages 🚀
