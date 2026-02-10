@@ -9,7 +9,7 @@ runs:
     - name: Checkout wodin
       uses: actions/checkout@v4
       with:
-        ref: mrc-6873
+        ref: mrc-6875
         repository: mrc-ide/wodin
         path: wodin-builder
 
